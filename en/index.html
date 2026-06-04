@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NoHello // HDHR</title>
+    <meta name="description" content="A short bilingual NoHello page for faster, kinder messages.">
+    <meta name="theme-color" content="#071120">
+    <meta property="og:title" content="NoHello // HDHR">
+    <meta property="og:description" content="Please skip the lone hello and send the context too.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://nohello.hdhr.my.id/en/">
+    <link rel="canonical" href="https://nohello.hdhr.my.id/en/">
+    <link rel="icon" href="../assets/favicon.ico" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+  </head>
+  <body>
+    <canvas id="signal-canvas" aria-hidden="true"></canvas>
+
+    <div class="container">
+      <header>
+        <a class="brand" href="#top" aria-label="NoHello home">
+          <span class="brand-mark">N_</span>
+          <span>
+            <strong>NoHello</strong>
+            <small data-i18n="brandTagline">short, kind, clear</small>
+          </span>
+        </a>
+
+        <nav aria-label="Primary navigation">
+          <a href="#why" data-i18n="navWhy">Why?</a>
+          <a href="#example" data-i18n="navExample">Example</a>
+          <a href="#copy" data-i18n="navCopy">Short text</a>
+        </nav>
+
+        <div class="lang-switch" aria-label="Language">
+          <span class="lang-indicator" aria-hidden="true"></span>
+          <a href="/id/" data-lang="id" aria-label="Bahasa Indonesia" title="Bahasa Indonesia">🇮🇩</a>
+          <a class="is-active" href="/en/" data-lang="en" aria-label="English" title="English">🇬🇧</a>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <p class="eyebrow" data-i18n="heroEyebrow">A small note before you DM me</p>
+            <h1 id="hero-title" data-i18n-html="heroTitle">Please do not just say <span>"hello"</span>.</h1>
+            <p id="typing-effect" class="typing" aria-live="polite"></p>
+            <p class="lead" data-i18n="heroLead">Send the question, context, and what you need in one message. I still like friendly chats, it is just faster when the problem arrives with the greeting.</p>
+            <div class="hero-actions">
+              <a class="button primary" href="#example" data-i18n="heroCta">See example</a>
+              <a class="button icon-button github-button" href="https://github.com/NoHello" rel="noreferrer" aria-label="Open NoHello on GitHub" data-i18n-aria="githubCta">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 .5C5.65.5.5 5.65.5 12c0 5.09 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56 0-.28-.01-1.2-.02-2.18-3.2.7-3.88-1.36-3.88-1.36-.52-1.33-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.05 0 0 .97-.31 3.17 1.18A10.96 10.96 0 0 1 12 5.98c.98 0 1.97.13 2.89.39 2.2-1.49 3.17-1.18 3.17-1.18.63 1.58.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.43-2.7 5.41-5.27 5.7.41.36.78 1.06.78 2.14 0 1.55-.01 2.8-.01 3.18 0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="chat-preview" aria-hidden="true">
+            <div class="phone-bar">
+              <span></span>
+              <strong>NoHello</strong>
+            </div>
+            <div class="chat-stream">
+              <p class="bubble other" data-chat="hello">Hello</p>
+              <p class="bubble typing-dots"><span></span><span></span><span></span></p>
+              <p class="bubble me" data-chat="better">Hello, can you help check this? I sent the context too.</p>
+              <p class="bubble other small" data-chat="thanks">Sure, this is much easier to help with.</p>
+            </div>
+          </div>
+        </section>
+
+        <section id="why" aria-labelledby="why-title">
+          <p class="eyebrow" data-i18n="whyEyebrow">Less waiting, more helping</p>
+          <h2 id="why-title" data-i18n="whyTitle">Why?</h2>
+          <div class="grid three">
+            <article class="info-card">
+              <span class="card-index">01</span>
+              <h3 data-i18n="whyOneTitle">Less waiting</h3>
+              <p data-i18n="whyOneText">When the actual request is included upfront, I can read it and answer when I am online without a greeting-only round trip.</p>
+            </article>
+            <article class="info-card">
+              <span class="card-index">02</span>
+              <h3 data-i18n="whyTwoTitle">Context survives</h3>
+              <p data-i18n="whyTwoText">Small details like errors, links, deadlines, or the goal often decide whether the reply is useful or just guesswork.</p>
+            </article>
+            <article class="info-card">
+              <span class="card-index">03</span>
+              <h3 data-i18n="whyThreeTitle">Still friendly</h3>
+              <p data-i18n="whyThreeText">Greetings are welcome. Just continue with the message in the same send.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="example" aria-labelledby="example-title">
+          <p class="eyebrow" data-i18n="exampleEyebrow">Same friendly tone, more useful message</p>
+          <h2 id="example-title" data-i18n="exampleTitle">Message example</h2>
+          <div class="compare">
+            <article class="message-card bad">
+              <h3 data-i18n="badTitle">Less ideal</h3>
+              <p data-i18n="badText">Hello</p>
+              <p data-i18n="badMeta">Then waiting for a reply before explaining what is needed.</p>
+            </article>
+            <article class="message-card good">
+              <h3 data-i18n="goodTitle">Better</h3>
+              <p data-i18n="goodText">Hello, can you help me pick a time for a meeting this week? I am free Tuesday afternoon or Thursday morning, and it should take around 30 minutes.</p>
+              <p data-i18n="goodMeta">The greeting stays, and the context arrives with it.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="copy" aria-labelledby="copy-title">
+          <p class="eyebrow" data-i18n="copyEyebrow">Need a good reply?</p>
+          <h2 id="copy-title" data-i18n="copyTitle">Short text</h2>
+          <div class="copy-box">
+            <p id="copyText" data-i18n="copyText">Hey! To make this faster, please send the question or context directly. No need to wait for me to reply to "hello" first.</p>
+            <button id="copyButton" class="button primary" type="button" data-i18n="copyButton">Copy</button>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>© <span id="current-year"></span> HDHR // <a href="https://nohello.hdhr.my.id/en/">nohello.hdhr.my.id</a></p>
+      </footer>
+    </div>
+
+    <script src="../script.js"></script>
+  </body>
+</html>
