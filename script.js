@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const typing = document.getElementById("typing-effect");
   const copyButton = document.getElementById("copyButton");
   const copyText = document.getElementById("copyText");
-  const transitionDuration = 180;
+  const transitionDuration = 120;
   let typingRun = 0;
   let activeLang = getLangFromPath() || getLangFromQuery() || "en";
 
@@ -135,6 +135,13 @@ document.addEventListener("DOMContentLoaded", () => {
     return lang === "en" ? `/en/${hash}` : `/id/${hash}`;
   }
 
+  function updateUrlForLang(lang) {
+    const route = routeForLang(lang);
+    if (route && window.location.pathname + window.location.hash !== route) {
+      window.history.pushState({ lang }, "", route);
+    }
+  }
+
   function typeText(message, target, runId, index = 0) {
     if (!target) return;
     if (runId !== typingRun) return;
@@ -148,24 +155,23 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-lang]").forEach((button) => {
     button.addEventListener("click", (event) => {
       const nextLang = button.dataset.lang;
-      const route = routeForLang(button.dataset.lang);
       event.preventDefault();
-      if (nextLang === activeLang && route) return;
+      if (nextLang === activeLang) return;
+
       document.body.classList.add("is-switching");
 
-      if (route) {
-        window.setTimeout(() => {
-          window.location.href = route;
-        }, transitionDuration);
-      } else {
-        window.setTimeout(() => {
-          setLanguage(nextLang);
-          window.requestAnimationFrame(() => {
-            document.body.classList.remove("is-switching");
-          });
-        }, transitionDuration);
-      }
+      window.setTimeout(() => {
+        setLanguage(nextLang);
+        updateUrlForLang(nextLang);
+        window.requestAnimationFrame(() => {
+          document.body.classList.remove("is-switching");
+        });
+      }, transitionDuration);
     });
+  });
+
+  window.addEventListener("popstate", () => {
+    setLanguage(getLangFromPath() || getLangFromQuery() || "en");
   });
 
   copyButton.addEventListener("click", async () => {
