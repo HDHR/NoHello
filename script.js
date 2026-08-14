@@ -1,6 +1,5 @@
 const translations = {
   id: {
-    brandTagline: "singkat, ramah, jelas",
     navWhy: "Kenapa?",
     navExample: "Contoh",
     navCopy: "Teks singkat",
@@ -29,14 +28,15 @@ const translations = {
     copyTitle: "Teks singkat",
     copyText: 'Hai! Biar lebih cepat, langsung kirim pertanyaan atau konteksnya ya. Tidak perlu nunggu aku balas "halo" dulu.',
     copyButton: "Salin",
-    copied: "Copied",
+    copied: "Tersalin!",
     typing: "Sapaannya boleh. Konteksnya jangan ketinggalan.",
     chatHello: "Halo",
     chatBetter: "Halo, bisa bantu cek ini? Aku sudah kirim konteksnya juga.",
-    chatThanks: "Siap, ini jauh lebih gampang dibantu."
+    chatThanks: "Siap, ini jauh lebih gampang dibantu.",
+    senderOther: "Lu",
+    senderMe: "Gw"
   },
   en: {
-    brandTagline: "short, kind, clear",
     navWhy: "Why?",
     navExample: "Example",
     navCopy: "Short text",
@@ -65,11 +65,13 @@ const translations = {
     copyTitle: "Short text",
     copyText: 'Hey! To make this faster, please send the question or context directly. No need to wait for me to reply to "hello" first.',
     copyButton: "Copy",
-    copied: "Copied",
+    copied: "Copied!",
     typing: "Greetings are good. Context makes them useful.",
     chatHello: "Hello",
     chatBetter: "Hello, can you help check this? I sent the context too.",
-    chatThanks: "Sure, this is much easier to help with."
+    chatThanks: "Sure, this is much easier to help with.",
+    senderOther: "You",
+    senderMe: "Me"
   }
 };
 
@@ -82,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let typingRun = 0;
   let activeLang = getLangFromPath() || getLangFromQuery() || "en";
 
-  year.textContent = new Date().getFullYear();
+  if (year) year.textContent = new Date().getFullYear();
 
   function setLanguage(lang) {
     activeLang = translations[lang] ? lang : "en";
@@ -111,12 +113,23 @@ document.addEventListener("DOMContentLoaded", () => {
       button.classList.toggle("is-active", button.dataset.lang === activeLang);
     });
 
-    copyButton.textContent = translations[activeLang].copyButton;
+    if (copyButton) copyButton.textContent = translations[activeLang].copyButton;
     typeText(translations[activeLang].typing, typing, ++typingRun);
 
-    document.querySelector("[data-chat='hello']").textContent = translations[activeLang].chatHello;
-    document.querySelector("[data-chat='better']").textContent = translations[activeLang].chatBetter;
-    document.querySelector("[data-chat='thanks']").textContent = translations[activeLang].chatThanks;
+    const chatHello = document.querySelector("[data-chat='hello']");
+    const chatBetter = document.querySelector("[data-chat='better']");
+    const chatThanks = document.querySelector("[data-chat='thanks']");
+
+    if (chatHello) chatHello.textContent = translations[activeLang].chatHello;
+    if (chatBetter) chatBetter.textContent = translations[activeLang].chatBetter;
+    if (chatThanks) chatThanks.textContent = translations[activeLang].chatThanks;
+
+    document.querySelectorAll(".bubble.other:not(.typing-dots)").forEach((node) => {
+      node.setAttribute("data-sender", translations[activeLang].senderOther);
+    });
+    document.querySelectorAll(".bubble.me").forEach((node) => {
+      node.setAttribute("data-sender", translations[activeLang].senderMe);
+    });
   }
 
   function getLangFromPath() {
@@ -148,7 +161,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (index === 0) target.textContent = "";
     if (index < message.length) {
       target.textContent += message.charAt(index);
-      window.setTimeout(() => typeText(message, target, runId, index + 1), 34);
+      window.setTimeout(() => typeText(message, target, runId, index + 1), 30);
     }
   }
 
@@ -174,37 +187,41 @@ document.addEventListener("DOMContentLoaded", () => {
     setLanguage(getLangFromPath() || getLangFromQuery() || "en");
   });
 
-  copyButton.addEventListener("click", async () => {
-    if (navigator.clipboard && window.isSecureContext) {
-      await navigator.clipboard.writeText(copyText.textContent);
-    } else {
-      const selection = window.getSelection();
-      const range = document.createRange();
-      range.selectNodeContents(copyText);
-      selection.removeAllRanges();
-      selection.addRange(range);
-      document.execCommand("copy");
-      selection.removeAllRanges();
-    }
+  if (copyButton && copyText) {
+    copyButton.addEventListener("click", async () => {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(copyText.textContent);
+      } else {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(copyText);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand("copy");
+        selection.removeAllRanges();
+      }
 
-    copyButton.textContent = translations[activeLang].copied;
-    window.setTimeout(() => {
-      copyButton.textContent = translations[activeLang].copyButton;
-    }, 1200);
-  });
+      copyButton.textContent = translations[activeLang].copied;
+      window.setTimeout(() => {
+        copyButton.textContent = translations[activeLang].copyButton;
+      }, 1200);
+    });
+  }
 
   setLanguage(activeLang);
   startCanvas();
 });
 
+/* Odysseus Synapse Grid Particle Canvas */
 function startCanvas() {
   const canvas = document.getElementById("signal-canvas");
+  if (!canvas) return;
   const context = canvas.getContext("2d");
-  const points = Array.from({ length: 48 }, () => ({
+  const points = Array.from({ length: 42 }, () => ({
     x: Math.random(),
     y: Math.random(),
-    vx: (Math.random() - 0.5) * 0.0007,
-    vy: (Math.random() - 0.5) * 0.0007
+    vx: (Math.random() - 0.5) * 0.0004,
+    vy: (Math.random() - 0.5) * 0.0004
   }));
 
   function resize() {
@@ -236,8 +253,8 @@ function startCanvas() {
         const by = b.y * height;
         const distance = Math.hypot(ax - bx, ay - by);
 
-        if (distance < 150) {
-          context.strokeStyle = `rgba(101, 243, 214, ${0.14 * (1 - distance / 150)})`;
+        if (distance < 140) {
+          context.strokeStyle = `rgba(53, 90, 102, ${0.25 * (1 - distance / 140)})`;
           context.lineWidth = 1;
           context.beginPath();
           context.moveTo(ax, ay);
@@ -248,9 +265,9 @@ function startCanvas() {
     }
 
     points.forEach((point) => {
-      context.fillStyle = "rgba(76, 194, 255, 0.55)";
+      context.fillStyle = "rgba(156, 222, 242, 0.45)";
       context.beginPath();
-      context.arc(point.x * width, point.y * height, 1.8, 0, Math.PI * 2);
+      context.arc(point.x * width, point.y * height, 1.5, 0, Math.PI * 2);
       context.fill();
     });
 
